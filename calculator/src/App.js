@@ -1,23 +1,51 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
 
 function App() {
+  const [display, setDisplay] = useState('')
+  const buttons = [
+    '7', '8', '9', '+',
+    '4', '5', '6', '-',
+    '1', '2', '3', '*',
+    '0', '.', '=', '/',
+    'C'
+  ]
+
+  const handleCalculate = (value) => {
+    if (value === '=') {
+      try {
+        const result = eval(display);
+        setDisplay(result.toString());
+      } catch (error) {
+        console.error('error');
+      }
+
+    } else if (value === 'C') {
+      setDisplay('');
+    }
+    else {
+      setDisplay(display + value);
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="calculator">
+      <h1>Calculator</h1>
+      <input
+        type='text'
+        value={display}
+        readOnly
+        placeholder='enter..'
+      />
+      <div className='buttons'>
+        {
+          buttons.map((btn, index) => (
+            <button key={index}
+              onClick={() => { handleCalculate(btn) }}
+            >{btn}</button>
+          ))
+        }
+      </div>
     </div>
   );
 }
